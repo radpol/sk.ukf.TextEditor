@@ -1,8 +1,7 @@
-package sk.ukf.aplikacia;
+package program;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -17,8 +16,6 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
-//import org.eclipse.ui.examples.rcp.texteditor.actions.OpenFileAction;
-
 
 /**
  * An action bar advisor is responsible for creating, adding, and disposing of the
@@ -36,11 +33,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     private OpenViewAction openViewAction;
     private Action messagePopupAction;
 	private IWorkbenchAction cutAction;
-	private IAction undoAction;
-	private IAction redoAction;
-	private IAction copyAction;
-	private IAction pasteAction;
-	//private OpenFileAction openFileAction;
+	private IWorkbenchAction undoAction;
+	private IWorkbenchAction redoAction;
+	private IWorkbenchAction copyAction;
+	private IWorkbenchAction pasteAction;
     
 
     public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
@@ -65,9 +61,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         
         openViewAction = new OpenViewAction(window, "Open Another Message View", View.ID);
         register(openViewAction);
-        
-       // openFileAction = new OpenFileAction();
-        //register(openFileAction);
         
         messagePopupAction = new MessagePopupAction("Open Message", window);
         register(messagePopupAction);
@@ -98,21 +91,19 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         menuBar.add(editMenu);
         // Add a group marker indicating where action set menus will appear.
         menuBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
-       
         menuBar.add(helpMenu);
         
         // File
         fileMenu.add(new GroupMarker(IWorkbenchActionConstants.FIND_EXT));
-        //fileMenu.add(newWindowAction);
-        //fileMenu.add(new Separator());
+        fileMenu.add(newWindowAction);
+        fileMenu.add(new Separator());
         fileMenu.add(messagePopupAction);
         fileMenu.add(openViewAction);
         fileMenu.add(new Separator());
-        //fileMenu.add(openFileAction);
         fileMenu.add(exitAction);
         
         //edit
-
+        editMenu.add(new GroupMarker(IWorkbenchActionConstants.FIND_EXT));
         editMenu.add(undoAction);
         editMenu.add(redoAction);
         fileMenu.add(new Separator());

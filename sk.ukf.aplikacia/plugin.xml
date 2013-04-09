@@ -55,6 +55,13 @@
             categoryId="sk.ukf.aplikacia.category"
             id="sk.ukf.aplikacia.openMessage">
       </command>
+      <command
+            categoryId="org.eclipse.ui.category.file"
+            defaultHandler="handler"
+            description="open file"
+            id="sk.ukf.aplikacia.command1"
+            name="name">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -72,6 +79,12 @@
             commandId="org.eclipse.ui.file.exit"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+X">
+      </key>
+      <key
+            commandId="sk.ukf.aplikacia.open"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="sk.ukf.aplikacia.key1">
       </key>
    </extension>
    <extension
