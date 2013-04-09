@@ -162,12 +162,5 @@
          </toolbar>
       </menuContribution>
    </extension>
-   <extension
-         point="org.eclipse.ui.editorActions">
-      <editorContribution
-            id="program.editorContribution1"
-            targetID="program.editorContribution1">
-      </editorContribution>
-   </extension>
 
 </plugin>
