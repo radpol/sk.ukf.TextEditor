@@ -6,11 +6,11 @@ public final class RichStringBuilder {
     public static final String LINE_DELIMITER = "<br/>";
  
     private StringBuilder builder;
-    private Stack fontStyleStack;
+    private Stack<FontStyle> fontStyleStack;
  
     public RichStringBuilder() {
         builder = new StringBuilder();
-        fontStyleStack = new Stack();
+        fontStyleStack = new Stack<FontStyle>();
     }
  
     public RichStringBuilder append(String text) {

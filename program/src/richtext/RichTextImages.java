@@ -12,11 +12,11 @@ public class RichTextImages {
     private static final String IMG_BOLD = "sample.gif";
 
     private static final String IMG_ITALIC = "sample.gif";
-    private static final String IMG_UNDERLINE = "sample.gif";
+    private static final String IMG_UNDERLINE = "sample2.gif";
     private static final String IMG_STRIKE_THROUGH = "sample.gif";
-    private static final String IMG_CUT = "sample.gif";
-    private static final String IMG_COPY = "sample.gif";
-    private static final String IMG_PASTE = "sample.gif";
+    private static final String IMG_CUT = "cut.png";
+    private static final String IMG_COPY = "copy.png";
+    private static final String IMG_PASTE = "paste.png";
     private static final String IMG_ERASER = "sample.gif";
 
     private static Image loadImage(String string) {

@@ -26,7 +26,7 @@ public final class RichTextParser {
 
 	private final StringBuilder text = new StringBuilder();
 
-	private final List styleRanges = new ArrayList();
+	private final List<StyleRange> styleRanges = new ArrayList<StyleRange>();
 
 	private RichTextParser(String formattedText)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -41,9 +41,8 @@ public final class RichTextParser {
 		return text.toString();
 	}
 
-	@SuppressWarnings("unchecked")
 	public StyleRange[] getStyleRanges() {
-		return (StyleRange[]) styleRanges.toArray(new StyleRange[styleRanges
+		return styleRanges.toArray(new StyleRange[styleRanges
 				.size()]);
 	}
 
@@ -70,7 +69,7 @@ public final class RichTextParser {
 				return;
 			}
 
-			List lastStyles = lastFontStyles(true);
+			List<FontStyle> lastStyles = lastFontStyles(true);
 			if (lastStyles != null) {
 				StyleRange range = transform(lastStyles);
 				range.start = currentIndex() + 1;
@@ -91,10 +90,10 @@ public final class RichTextParser {
 				return;
 			}
 
-			List lastStyles = lastFontStyles(false);
+			List<FontStyle> lastStyles = lastFontStyles(false);
 			if (lastTextChunk == null) {
 				if (lastStyles == null) {
-					lastStyles = new ArrayList();
+					lastStyles = new ArrayList<FontStyle>();
 					stylesStack.add(lastStyles);
 				}
 			} else {
@@ -138,8 +137,8 @@ public final class RichTextParser {
 			return range;
 		}
 
-		private List lastFontStyles(boolean remove) {
-			List lastStyles = null;
+		private List<FontStyle> lastFontStyles(boolean remove) {
+			List<FontStyle> lastStyles = null;
 			if (stylesStack.size() > 0) {
 				if (remove) {
 					lastStyles = stylesStack.pop();

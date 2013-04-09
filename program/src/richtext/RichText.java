@@ -9,24 +9,19 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CaretListener;
 import org.eclipse.swt.custom.ExtendedModifyEvent;
 import org.eclipse.swt.custom.ExtendedModifyListener;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.custom.VerifyKeyListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Caret;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
@@ -34,7 +29,7 @@ import org.xml.sax.SAXException;
 
 public class RichText extends Composite {
 
-	private List cachedStyles = Collections.synchronizedList(new LinkedList());
+	private List<StyleRange> cachedStyles = new LinkedList<StyleRange>();
 
 	private ToolBar toolBar;
 	private StyledText styledText;
@@ -51,58 +46,9 @@ public class RichText extends Composite {
 		super(parent, style);
 		initComponents();
 	}
-
-	public void addCaretListener(CaretListener listener) {
-		styledText.addCaretListener(listener);
-	}
-
-	public void removeCaretListener(CaretListener listener) {
-		styledText.removeCaretListener(listener);
-	}
-
-	public void addExtendedModifyListener(ExtendedModifyListener listener) {
-		styledText.addExtendedModifyListener(listener);
-	}
-
-	public void removeExtendedModifyListener(ExtendedModifyListener listener) {
-		styledText.removeExtendedModifyListener(listener);
-	}
-
-	public void addModifyListener(ModifyListener listener) {
-		styledText.addModifyListener(listener);
-	}
-
-	public void removeModifyListener(ModifyListener listener) {
-		styledText.removeModifyListener(listener);
-	}
-
-	public void addVerifyKeyListener(VerifyKeyListener listener) {
-		styledText.addVerifyKeyListener(listener);
-	}
-
-	public void removeVerifyKeyListener(VerifyKeyListener listener) {
-		styledText.removeVerifyKeyListener(listener);
-	}
-
-	public void addVerifyListener(VerifyListener listener) {
-		styledText.addVerifyListener(listener);
-	}
-
-	public void removeVerifyListener(VerifyListener listener) {
-		styledText.removeVerifyListener(listener);
-	}
-
-	public int getCharCount() {
-		return styledText.getCharCount();
-	}
-
-	public Caret getCaret() {
-		return styledText.getCaret();
-	}
-
-	public int getCaretOffset() {
-		return styledText.getCaretOffset();
-	}
+public StyledText getStyledTextWidget(){
+	return styledText;
+}
 
 	/**
 	 * Obtain an HTML formatted text from the component contents
@@ -131,9 +77,8 @@ public class RichText extends Composite {
 								ranges[i].start));
 					}
 
-					List styles = translateStyle(ranges[i]);
-					builder.startFontStyles((FontStyle[]) styles
-							.toArray(new FontStyle[styles.size()]));
+					List<FontStyle> styles = translateStyle(ranges[i]);
+					builder.startFontStyles(new FontStyle[styles.size()]);
 					builder.append(plainText.substring(ranges[i].start,
 							ranges[i].start + ranges[i].length));
 					builder.endFontStyles(styles.size());
@@ -158,22 +103,6 @@ public class RichText extends Composite {
 		RichTextParser parser = RichTextParser.parse(text);
 		styledText.setText(parser.getText());
 		styledText.setStyleRanges(parser.getStyleRanges());
-	}
-
-	public int getLineAtOffset(int offset) {
-		return styledText.getLineAtOffset(offset);
-	}
-
-	public int getLineCount() {
-		return styledText.getLineCount();
-	}
-
-	public int getLineSpacing() {
-		return styledText.getLineSpacing();
-	}
-
-	public String getText() {
-		return styledText.getText();
 	}
 
 	protected void applyFontStyleToSelection(FontStyle style) {
@@ -228,7 +157,7 @@ public class RichText extends Composite {
 	}
 
 	private Integer[] getLineBreaks() {
-		List list = new ArrayList();
+		List<Integer> list = new ArrayList<Integer>();
 		int lastIdx = 0;
 		while (lastIdx < styledText.getCharCount()) {
 			int br = styledText.getText().indexOf(
@@ -249,7 +178,7 @@ public class RichText extends Composite {
 		// handle the pasting of styles would be to access the Clipboard
 		// directly and
 		// parse the RTF text.
-		cachedStyles = Collections.synchronizedList(new LinkedList());
+		cachedStyles = new LinkedList<StyleRange>();
 		Point sel = styledText.getSelectionRange();
 		int startX = sel.x;
 		for (int i = sel.x; i <= sel.x + sel.y - 1; i++) {
@@ -393,7 +322,7 @@ public class RichText extends Composite {
 
 	private ToolBar createToolBar(Composite parent) {
 		ToolBar toolBar = new ToolBar(parent, SWT.FLAT);
-
+//toolBar.
 		boldBtn = new ToolItem(toolBar, SWT.CHECK);
 		boldBtn.setImage(RichTextImages.getImgBold());
 		boldBtn.setToolTipText(RichTextStrings.boldBtn_tooltipText);
@@ -467,12 +396,11 @@ public class RichText extends Composite {
 				clearStylesFromSelection();
 			}
 		});
-
 		return toolBar;
 	}
 
-	private List translateStyle(StyleRange range) {
-		List list = new ArrayList();
+	private List<FontStyle> translateStyle(StyleRange range) {
+		List<FontStyle> list = new ArrayList<FontStyle>();
 
 		if ((range.fontStyle & SWT.BOLD) != 0) {
 			list.add(FontStyle.BOLD);

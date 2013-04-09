@@ -155,8 +155,9 @@
                id="program.toolbars.sampleToolbar">
             <command
                   commandId="program.commands.sampleCommand"
-                  icon="icons/sample.gif"
+                  icon="icons/open.png"
                   id="program.toolbars.sampleCommand"
+                  style="pulldown"
                   tooltip="Say hello world">
             </command>
          </toolbar>
