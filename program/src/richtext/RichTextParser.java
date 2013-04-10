@@ -63,9 +63,10 @@ public final class RichTextParser {
             // If there is not any previous text chunk parsed then return
             if (lastTextChunk == null) return;
             // If the tag found is not a supported one then return
-            if (!"p".equals(qName) || !"b".equals(qName) || !"i".equals(qName) ||
-                    !"ins".equals(qName) || !"del".equals(qName)) {
-                //return;
+            boolean recognized = ("p".equals(qName)  || "b".equals(qName)  || "i".equals(qName) ||
+					"ins".equals(qName)  || "del".equals(qName) );
+			if (!recognized ) {
+                return;
             }
  
             List<FontStyle> lastStyles = lastFontStyles(true);
