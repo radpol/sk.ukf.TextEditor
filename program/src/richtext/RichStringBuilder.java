@@ -2,15 +2,15 @@ package richtext;
 import java.util.Stack;
  
 public final class RichStringBuilder {
- 
+	 
     public static final String LINE_DELIMITER = "<br/>";
  
     private StringBuilder builder;
-    private Stack<FontStyle> fontStyleStack;
+    private Stack fontStyleStack;
  
     public RichStringBuilder() {
         builder = new StringBuilder();
-        fontStyleStack = new Stack<FontStyle>();
+        fontStyleStack = new Stack();
     }
  
     public RichStringBuilder append(String text) {

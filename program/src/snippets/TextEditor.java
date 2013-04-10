@@ -48,7 +48,7 @@ public class TextEditor {
 
 	Font font = null;
 
-	ToolItem boldButton, italicButton, underlineButton, strikeoutButton;
+	ToolItem boldButton, italicButton, underlineButton, strikeoutButton, fontbutton;
 
 	Menu createEditMenu() {
 		Menu bar = shell.getMenuBar();
@@ -252,6 +252,7 @@ public class TextEditor {
 		strikeoutButton.setToolTipText("Strikeout");
 		strikeoutButton.addSelectionListener(listener);
 
+
 		ToolItem item = new ToolItem(toolBar, SWT.SEPARATOR);
 		item = new ToolItem(toolBar, SWT.PUSH);
 		item.setImage(images.Red);
@@ -280,6 +281,18 @@ public class TextEditor {
 		item = new ToolItem(toolBar, SWT.SEPARATOR);
 		item = new ToolItem(toolBar, SWT.PUSH);
 		item.setImage(images.Erase);
+		
+		ToolItem tltmNewItem = new ToolItem(toolBar, SWT.NONE);
+		tltmNewItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				StyleRange[] aaa = text.getStyleRanges();
+				System.out.println(aaa);
+				setFont();
+			}
+		});
+		tltmNewItem.setToolTipText("font");
+		tltmNewItem.setText("Set font");
 		item.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {

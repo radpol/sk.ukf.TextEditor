@@ -13,6 +13,8 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 
+import program.editors.MultiPageEditor;
+
 
 public class MessagePopupAction extends Action {
 
@@ -48,14 +50,19 @@ public class MessagePopupAction extends Action {
 				page.openEditor(input, editorId);
 			} catch (PartInitException e) {
 				e.printStackTrace();
+				MessageDialog.openWarning(window.getShell(), "Problem", "File is 'null'");
 			}
-		} else {
-			MessageDialog.openWarning(window.getShell(), "Problem", "File is 'null'"); //$NON-NLS-1$
 		}
 	}
 
 	private String getEditorId(File file) {
-		return SimpleEditor.ID; //$NON-NLS-1$
+//		IWorkbench workbench= window.getWorkbench();
+//		IEditorRegistry editorRegistry= workbench.getEditorRegistry();
+//		IEditorDescriptor descriptor= editorRegistry.getDefaultEditor(file.getName());
+//		if (descriptor != null)
+//			return descriptor.getId();
+		return MultiPageEditor.ID;
+		//return SimpleEditor.ID; 
 	}
 
 	private IEditorInput createEditorInput(File file) {

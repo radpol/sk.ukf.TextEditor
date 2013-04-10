@@ -19,7 +19,7 @@ public class View extends ViewPart {
 	
 	public void createPartControl(Composite parent) {
 		richtext = new RichText(parent, SWT.NONE);
-		richtext.getFormattedText();
+		//richtext.getFormattedText();
 		
 	}
 

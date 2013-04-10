@@ -3,6 +3,8 @@ package program.editors;
 import org.eclipse.ui.editors.text.TextEditor;
 
 public class XMLEditor extends TextEditor {
+	
+	public static final String ID = "program.editors.XMLEditor";
 
 	private ColorManager colorManager;
 

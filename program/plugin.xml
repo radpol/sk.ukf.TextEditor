@@ -126,6 +126,15 @@
             id="program.SampleEditor"
             name="Sample Editor">
       </editor>
+      <editor
+            class="program.editors.MultiPageEditor"
+            contributorClass="program.editors.MultiPageEditorContributor"
+            default="true"
+            extensions="mpe"
+            icon="icons/sample.gif"
+            id="program.editors.MultiPageEditor"
+            name="Sample Multi-page Editor">
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -162,6 +171,22 @@
             </command>
          </toolbar>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="program"
+            name="Sample Wizards">
+      </category>
+      <wizard
+            category="program"
+            class="program.wizards.SampleNewWizard"
+            finalPerspective="program.perspective"
+            icon="icons/sample.gif"
+            id="program.wizards.SampleNewWizard"
+            name="Multi-page Editor file"
+            project="true">
+      </wizard>
    </extension>
 
 </plugin>
