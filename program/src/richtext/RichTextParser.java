@@ -4,12 +4,11 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
- 
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
- 
-import org.eclipse.jface.resource.JFaceColors;
+
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
@@ -27,7 +26,7 @@ public final class RichTextParser {
  
     private StringBuilder text = new StringBuilder();
  
-    private List<StyleRange> styleRanges = new ArrayList<StyleRange>();
+    private List<StyleRange> styleRangeList = new ArrayList<StyleRange>();
  
     private RichTextParser(String formattedText)
     throws ParserConfigurationException, SAXException, IOException {
@@ -43,14 +42,18 @@ public final class RichTextParser {
     }
  
     public StyleRange[] getStyleRanges() {
-        return (StyleRange[]) styleRanges.toArray(new StyleRange[styleRanges.size()]);
+        return styleRangeList.toArray(new StyleRange[styleRangeList.size()]);
     }
- 
+
+    
+    
     private class RichTextContentHandler extends DefaultHandler {
  
         private Stack<List<FontStyle>> stylesStack = new Stack<List<FontStyle>>();
         private String lastTextChunk = null;
- 
+ /**
+  * {@link org.xml.sax.helpers.DefaultHandler.characters}
+  */
         @Override
         public void characters(char[] ch, int start, int length)
                 throws SAXException {
@@ -64,22 +67,24 @@ public final class RichTextParser {
             if (lastTextChunk == null) return;
             // If the tag found is not a supported one then return
             boolean recognized = ("p".equals(qName)  || "b".equals(qName)  || "i".equals(qName) ||
-					"ins".equals(qName)  || "del".equals(qName) );
+					"ins".equals(qName)  || "del".equals(qName) || "cc1".equals(qName));
 			if (!recognized ) {
                 return;
             }
  
             List<FontStyle> lastStyles = lastFontStyles(true);
             if (lastStyles != null) {
-                StyleRange range = transform(lastStyles);
+                StyleRange range = transformToStyleRange(lastStyles);
                 range.start = currentIndex() + 1;
                 range.length = lastTextChunk.length();
-                styleRanges.add(range);
+                styleRangeList.add(range);
             }
  
             text.append(lastTextChunk);
             lastTextChunk = null;
         }
+        
+
  
         @Override
         public void startElement(String uri, String localName, String qName,
@@ -87,10 +92,11 @@ public final class RichTextParser {
             // If the tag found is not a supported one then return
         	
 			boolean recognized = ("p".equals(qName)  || "b".equals(qName)  || "i".equals(qName) ||
-					"ins".equals(qName)  || "del".equals(qName) );
+					"ins".equals(qName)  || "del".equals(qName)|| "cc1".equals(qName) );
 			if (!recognized ) {
                 return;
             }
+
  
             List<FontStyle> lastStyles = lastFontStyles(false);
             if (lastTextChunk == null) {
@@ -100,48 +106,77 @@ public final class RichTextParser {
                 }
             } else {
                 if (lastStyles != null) {
-                    StyleRange range = transform(lastStyles);
+                    StyleRange range = transformToStyleRange(lastStyles);
                     range.start = currentIndex() + 1;
                     range.length = lastTextChunk.length();
-                    styleRanges.add(range);
+                    styleRangeList.add(range);
                 }
  
                 text.append(lastTextChunk);
                 lastTextChunk = null;
             }
- 
+            
+            String d = atts.getValue(0);
+            String a = atts.getValue(atts.getQName(0));
+            
+            
             if ("b".equals(qName)) {
                 lastStyles.add(FontStyle.BOLD);
             } else if ("i".equals(qName)) {
                 lastStyles.add(FontStyle.ITALIC);
             } else if ("ins".equals(qName)) {
                 lastStyles.add(FontStyle.UNDERLINE);
-            } else  if ("del".equals(qName)){
+            } else if ("del".equals(qName)){
             	lastStyles.add(FontStyle.STRIKE_THROUGH);
+            } else if ("cc1".equals(qName)) {
+                lastStyles.add(FontStyle.CUSTOM_COLOR_1);
             } else {
             	//TODO error code
             	lastStyles.add(null);
             }
-                
             
         }
  
-        private StyleRange transform(List<FontStyle> styles) {
+        private StyleRange transformToStyleRange(List<FontStyle> styles) {
             StyleRange range = new StyleRange();
             range.start = currentIndex() + 1;
             range.length = lastTextChunk.length();
             for (FontStyle fs : styles) {
-                if (FontStyle.BOLD == fs) {
-                    range.fontStyle += SWT.BOLD;
-                } else if (FontStyle.ITALIC == fs) {
-                    range.fontStyle += SWT.ITALIC;
-                } else if (FontStyle.STRIKE_THROUGH == fs) {
-                    range.strikeout = true;
-                } else if (FontStyle.UNDERLINE == fs) {
-                    range.underline = true;
-                } else if (FontStyle.CUSTOM_COLOR_1 == fs) {
-                range.foreground = JFaceResources.getColorRegistry().get(fs.name());
-                }
+            	if (fs!=null){
+            		
+            	
+            	switch (fs) {
+				case BOLD:
+					range.fontStyle += SWT.BOLD;
+					break;
+				case ITALIC:
+					range.fontStyle += SWT.ITALIC;
+					break;
+				case UNDERLINE:
+					range.underline = true;
+					break;
+				case STRIKE_THROUGH:
+					range.strikeout = true;
+					break;
+				case CUSTOM_COLOR_1:
+					range.foreground = JFaceResources.getColorRegistry().get(fs.name());
+					break;
+				case CUSTOM_COLOR_2:
+					break;
+				case CUSTOM_COLOR_3:
+					break;
+				case CUSTOM_FONT_3:
+					break;
+				case CUSTOM_FONT_1:
+					break;
+				case CUSTOM_FONT_2:
+					break;
+				default:
+					System.out.println("aaaaaaaa");
+					break;
+				}
+            	}
+
             }
             return range;
         }

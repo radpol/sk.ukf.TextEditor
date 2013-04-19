@@ -20,6 +20,6 @@ public class Perspective implements IPerspectiveFactory {
 		folder.addPlaceholder(View.ID + ":*");
 		folder.addView(View.ID);
 		
-		layout.getViewLayout(NavigationView.ID).setCloseable(false);
+		layout.getViewLayout(NavigationView.ID).setCloseable(true);
 	}
 }

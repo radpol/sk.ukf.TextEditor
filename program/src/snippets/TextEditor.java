@@ -286,8 +286,7 @@ public class TextEditor {
 		tltmNewItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				StyleRange[] aaa = text.getStyleRanges();
-				System.out.println(aaa);
+				//StyleRange[] aaa = text.getStyleRanges();
 				setFont();
 			}
 		});
